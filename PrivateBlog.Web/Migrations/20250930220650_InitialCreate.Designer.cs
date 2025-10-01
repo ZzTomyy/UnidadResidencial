@@ -15,6 +15,7 @@ namespace UnidadResidencial.Web.Migrations
     [Migration("20250930220650_InitialCreate")]
     partial class InitialCreate
     {
+
         /// <inheritdoc />
         protected void BuildTargetModel(ModelBuilder modelBuilder)
         {
