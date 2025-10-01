@@ -14,5 +14,6 @@ namespace UnidadResidencial.Web.Models
         public string? Description { get; set; }
 
         public bool IsHidden { get; set; } = false;
+
     }
 }
