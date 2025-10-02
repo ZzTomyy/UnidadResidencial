@@ -9,6 +9,7 @@ namespace UnidadResidencial.Web.Core
         public AutoMapperProfiles()
         {
             CreateMap<Section, SectionDTO>().ReverseMap();
+            CreateMap<SectionDTO, Section>();
         }
     }
 }

@@ -1,4 +1,5 @@
 using UnidadResidencial.Web;
+using AutoMapper;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -28,3 +29,6 @@ app.MapControllerRoute(
 app.AddCustomWebApplicationConfiguration();
 
 app.Run();
+
+var _ = WebApplication.CreateBuilder(args);
+builder.Services.AddAutoMapper(typeof(Program));

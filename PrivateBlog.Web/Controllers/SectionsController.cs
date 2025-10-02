@@ -6,6 +6,7 @@ using UnidadResidencial.Web.Services.Abstractions;
 
 namespace UnidadResidencial.Web.Controllers
 {
+    [Route("Sections")]
     public class SeccionesController : Controller
     {
         private readonly ISectionsService _sectionsService;
@@ -17,7 +18,8 @@ namespace UnidadResidencial.Web.Controllers
             _notyfService = notyfService;
         }
 
-        [HttpGet]
+        //  LISTADO
+        [HttpGet("")]
         public async Task<IActionResult> Index([FromQuery] PaginationRequest request)
         {
             var response = await _sectionsService.GetPaginatedListAsync(request);
@@ -31,13 +33,14 @@ namespace UnidadResidencial.Web.Controllers
             return View(response.Result);
         }
 
-        [HttpGet]
+        //  CREAR 
+        [HttpGet("create")]
         public IActionResult Create()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> Create([FromForm] SectionDTO dto)
         {
             if (!ModelState.IsValid)
@@ -58,7 +61,8 @@ namespace UnidadResidencial.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet]
+        //  EDITAR 
+        [HttpGet("edit/{id:guid}")]
         public async Task<IActionResult> Edit([FromRoute] Guid id)
         {
             var response = await _sectionsService.GetOneAsync(id);
@@ -71,7 +75,7 @@ namespace UnidadResidencial.Web.Controllers
             return View(response.Result);
         }
 
-        [HttpPost]
+        [HttpPost("edit")]
         public async Task<IActionResult> Edit([FromForm] SectionDTO dto)
         {
             if (!ModelState.IsValid)
@@ -92,7 +96,23 @@ namespace UnidadResidencial.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
+        //  DETALLES 
+        [HttpGet("details/{id:guid}")]
+        public async Task<IActionResult> Details([FromRoute] Guid id)
+        {
+            var response = await _sectionsService.GetOneAsync(id);
+
+            if (!response.IsSuccess)
+            {
+                _notyfService.Error(response.Message);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(response.Result);
+        }
+
+        //  ELIMINAR 
+        [HttpPost("delete/{id:guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var response = await _sectionsService.DeleteAsync(id);
@@ -105,7 +125,8 @@ namespace UnidadResidencial.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
+        //  TOGGLE 
+        [HttpPost("toggle")]
         public async Task<IActionResult> Toggle([FromForm] ToggleSectionStatusDTO dto)
         {
             var response = await _sectionsService.ToggleAsync(dto);
