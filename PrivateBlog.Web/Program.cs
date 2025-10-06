@@ -1,5 +1,6 @@
 using UnidadResidencial.Web;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 

@@ -7,12 +7,12 @@ using UnidadResidencial.Web.Services.Abstractions;
 namespace UnidadResidencial.Web.Controllers
 {
     [Route("Sections")]
-    public class SeccionesController : Controller
+    public class SectionsController : Controller
     {
         private readonly ISectionsService _sectionsService;
         private readonly INotyfService _notyfService;
 
-        public SeccionesController(ISectionsService sectionsService, INotyfService notyfService)
+        public SectionsController(ISectionsService sectionsService, INotyfService notyfService)
         {
             _sectionsService = sectionsService;
             _notyfService = notyfService;
