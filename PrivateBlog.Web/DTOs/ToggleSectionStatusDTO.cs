@@ -4,7 +4,7 @@ namespace UnidadResidencial.Web.DTOs
 {
     public class ToggleSectionStatusDTO
     {
-        [Required(ErrorMessage = "The field {0} is required.")]
+        [Required(ErrorMessage = "El campo {0} es requerido.")]
         public Guid SectionId { get; set; }
 
         public bool Hide { get; set; } = true;

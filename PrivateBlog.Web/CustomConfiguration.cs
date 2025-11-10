@@ -1,9 +1,14 @@
 ﻿using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UnidadResidencial.Web.Data;
+using UnidadResidencial.Web.Data.Entities;
 using UnidadResidencial.Web.Data.Seeders;
+using UnidadResidencial.Web.Helpers.Abstractions;
+using UnidadResidencial.Web.Helpers.Implementations;
 using UnidadResidencial.Web.Services.Abstractions;
+using UnidadResidencial.Web.Services.Abtractions;
 using UnidadResidencial.Web.Services.Implementations;
 
 namespace UnidadResidencial.Web
@@ -17,7 +22,7 @@ namespace UnidadResidencial.Web
             // Data Context
             builder.Services.AddDbContext<DataContext>(options =>
             {
-                options.UseSqlServer(cnn);
+                options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection"));
             });
 
             // AutoMapper
@@ -31,16 +36,50 @@ namespace UnidadResidencial.Web
                 config.Position = NotyfPosition.BottomRight;
             });
 
+            // Identity and Access Management
+            AddIAM(builder);
+
             // Services
             AddServices(builder);
 
+            builder.Services.AddHttpContextAccessor();
+
             return builder;
+        }
+
+        private static void AddIAM(WebApplicationBuilder builder)
+        {
+            builder.Services.AddIdentity<User, IdentityRole>(conf =>
+            {
+                conf.User.RequireUniqueEmail = true;
+                conf.Password.RequireDigit = false;
+                conf.Password.RequiredUniqueChars = 0;
+                conf.Password.RequireLowercase = false;
+                conf.Password.RequireUppercase = false;
+                conf.Password.RequireNonAlphanumeric = false;
+                conf.Password.RequiredLength = 4;
+            }).AddEntityFrameworkStores<DataContext>()
+              .AddDefaultTokenProviders();
+
+            builder.Services.ConfigureApplicationCookie(conf =>
+            {
+                conf.Cookie.Name = "Auth";
+                conf.ExpireTimeSpan = TimeSpan.FromDays(100);
+                conf.LoginPath = "/Account/Login";
+                conf.AccessDeniedPath = "/Error/403";
+            });
         }
 
         private static void AddServices(WebApplicationBuilder builder)
         {
             builder.Services.AddScoped<ISectionsService, SectionsService>();
+            builder.Services.AddScoped<IBlogsService, ResidencialService>();
+            builder.Services.AddScoped<IRolesService, RolesService>();
+            builder.Services.AddScoped<IUsersService, UsersService>();
+
             builder.Services.AddTransient<SeedDb>();
+
+            builder.Services.AddTransient<ICombosHelper, CombosHelper>();
         }
 
         public static WebApplication AddCustomWebApplicationConfiguration(this WebApplication app)
@@ -54,10 +93,10 @@ namespace UnidadResidencial.Web
 
         private static void SeedData(WebApplication app)
         {
-            IServiceScopeFactory scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+            IServiceScopeFactory scopeFactory = app.Services.GetService<IServiceScopeFactory>();
 
             using IServiceScope scope = scopeFactory.CreateScope();
-            SeedDb service = scope.ServiceProvider.GetRequiredService<SeedDb>();
+            SeedDb service = scope.ServiceProvider.GetService<SeedDb>();
             service.SeedAsync().Wait();
         }
     }

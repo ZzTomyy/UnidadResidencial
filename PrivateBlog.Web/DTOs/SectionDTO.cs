@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿    using System.ComponentModel.DataAnnotations;
 
 namespace UnidadResidencial.Web.DTOs
 {
@@ -6,14 +6,17 @@ namespace UnidadResidencial.Web.DTOs
     {
         public Guid Id { get; set; }
 
-        [Display(Name = "Section")]
-        [Required(ErrorMessage = "The field {0} is required.")]
+        [Display(Name = "Sección")]
+        [Required(ErrorMessage = "El campo {0} es requerido.")]
+        [MaxLength(32, ErrorMessage = "El campo {0} debe tener máximo {1} carácteres")]
         public string Name { get; set; } = null!;
 
-        [Display(Name = "Description")]
+
+        [MaxLength(64, ErrorMessage = "El campo {0} debe tener máximo {1} carácteres")]
+        [Display(Name = "Descripción")]
         public string? Description { get; set; }
 
-        [Display(Name = "Is Hidden?")]
+        [Display(Name = "¿Está oculta?")]
         public bool IsHidden { get; set; } = false;
     }
 }

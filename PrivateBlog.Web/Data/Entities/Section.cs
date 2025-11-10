@@ -1,5 +1,6 @@
-﻿using UnidadResidencial.Web.Data.Abstractions;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using UnidadResidencial.Web.Data.Abstractions;
+using UnidadResidencial.Web.Data.Entities;
 
 namespace UnidadResidencial.Web.Models
 {
@@ -8,12 +9,15 @@ namespace UnidadResidencial.Web.Models
         [Key]
         public Guid Id { get; set; }
 
-        [Required]
-        public string Name { get; set; } = null!;
+        [MaxLength(32)]
+        public required string Name { get; set; }
 
+        [MaxLength(64)]
         public string? Description { get; set; }
 
         public bool IsHidden { get; set; } = false;
+
+        public List<Residencial>? Residencials { get; set; }
 
     }
 }

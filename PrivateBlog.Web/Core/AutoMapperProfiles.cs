@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using UnidadResidencial.Web.Models;
+using UnidadResidencial.Web.Data.Entities;
 using UnidadResidencial.Web.DTOs;
+using UnidadResidencial.Web.Models;
 
 namespace UnidadResidencial.Web.Core
 {
@@ -9,7 +10,14 @@ namespace UnidadResidencial.Web.Core
         public AutoMapperProfiles()
         {
             CreateMap<Section, SectionDTO>().ReverseMap();
-            CreateMap<SectionDTO, Section>();
+
+            CreateMap<Residencial, ResidencialDTO>().ReverseMap();
+
+            CreateMap<User, AccountUserDTO>().ReverseMap();
+
+            CreateMap<Permission, PermissionDTO>();
+
+            CreateMap<ResidencialRole, ResidencialRoleDTO>().ReverseMap();
         }
     }
 }

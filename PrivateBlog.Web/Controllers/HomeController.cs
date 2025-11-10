@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-//using PrivateBlog.Web.Models;
 using UnidadResidencial.Web.Models;
 
 namespace UnidadResidencial.Web.Controllers
@@ -16,7 +15,6 @@ namespace UnidadResidencial.Web.Controllers
 
         public IActionResult Index()
         {
-            // Página principal del sistema de administración
             return View();
         }
 

@@ -1,5 +1,4 @@
 using UnidadResidencial.Web;
-using AutoMapper;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -18,8 +17,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseAuthentication();
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
@@ -29,6 +28,4 @@ app.MapControllerRoute(
 app.AddCustomWebApplicationConfiguration();
 
 app.Run();
-
-var _ = WebApplication.CreateBuilder(args);
 builder.Services.AddAutoMapper(typeof(Program));

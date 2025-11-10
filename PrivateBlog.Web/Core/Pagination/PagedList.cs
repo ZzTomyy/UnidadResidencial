@@ -12,6 +12,7 @@ namespace UnidadResidencial.Web.Core.Pagination
 
         public PagedList()
         {
+
         }
 
         public PagedList(List<T> items, int count, int pageNumber, int recordsPerPage)
@@ -27,10 +28,11 @@ namespace UnidadResidencial.Web.Core.Pagination
         {
             int count = await queryable.CountAsync();
 
-            List<T> items = await queryable.PaginateAsync(request)
+            List<T> items = await queryable.PaginateAsync<T>(request)
                                            .ToListAsync();
 
             return new PagedList<T>(items, count, request.Page, request.RecordsPerPage);
+
         }
     }
 }

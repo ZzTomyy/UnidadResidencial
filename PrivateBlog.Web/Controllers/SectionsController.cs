@@ -1,28 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Microsoft.AspNetCore.Mvc;
+using UnidadResidencial.Web.Core;
+using UnidadResidencial.Web.Core.Extensions;
 using UnidadResidencial.Web.Core.Pagination;
 using UnidadResidencial.Web.DTOs;
 using UnidadResidencial.Web.Services.Abstractions;
 
 namespace UnidadResidencial.Web.Controllers
 {
-    [Route("Sections")]
-    public class SeccionesController : Controller
+    public class SectionsController : Controller
     {
         private readonly ISectionsService _sectionsService;
         private readonly INotyfService _notyfService;
 
-        public SeccionesController(ISectionsService sectionsService, INotyfService notyfService)
+        public SectionsController(ISectionsService sectionsService, INotyfService notyfService)
         {
             _sectionsService = sectionsService;
             _notyfService = notyfService;
         }
 
-        //  LISTADO
-        [HttpGet("")]
+        [HttpGet]
+        [CustomAuthorize(permission: "showSections", module: "Secciones")]
         public async Task<IActionResult> Index([FromQuery] PaginationRequest request)
         {
-            var response = await _sectionsService.GetPaginatedListAsync(request);
+            Response<PaginationResponse<SectionDTO>> response = await _sectionsService.GetPaginatedListAsync(request);
 
             if (!response.IsSuccess)
             {
@@ -33,14 +34,15 @@ namespace UnidadResidencial.Web.Controllers
             return View(response.Result);
         }
 
-        //  CREAR 
-        [HttpGet("create")]
+        [HttpGet]
+        [CustomAuthorize("Secciones", "createSections")]
         public IActionResult Create()
         {
             return View();
         }
 
-        [HttpPost("create")]
+        [HttpPost]
+        [CustomAuthorize("createSections", "Secciones")]
         public async Task<IActionResult> Create([FromForm] SectionDTO dto)
         {
             if (!ModelState.IsValid)
@@ -49,7 +51,7 @@ namespace UnidadResidencial.Web.Controllers
                 return View(dto);
             }
 
-            var response = await _sectionsService.CreateAsync(dto);
+            Response<SectionDTO> response = await _sectionsService.CreateAsync(dto);
 
             if (!response.IsSuccess)
             {
@@ -61,21 +63,23 @@ namespace UnidadResidencial.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //  EDITAR 
-        [HttpGet("edit/{id:guid}")]
+        [HttpGet]
+        [CustomAuthorize("updateSections", "Secciones")]
         public async Task<IActionResult> Edit([FromRoute] Guid id)
         {
-            var response = await _sectionsService.GetOneAsync(id);
+            Response<SectionDTO> response = await _sectionsService.GetOneAsync(id);
 
             if (!response.IsSuccess)
             {
                 _notyfService.Error(response.Message);
                 return RedirectToAction(nameof(Index));
             }
+
             return View(response.Result);
         }
 
-        [HttpPost("edit")]
+        [HttpPost]
+        [CustomAuthorize("updateSections", "Secciones")]
         public async Task<IActionResult> Edit([FromForm] SectionDTO dto)
         {
             if (!ModelState.IsValid)
@@ -84,7 +88,7 @@ namespace UnidadResidencial.Web.Controllers
                 return View(dto);
             }
 
-            var response = await _sectionsService.EditAsync(dto);
+            Response<SectionDTO> response = await _sectionsService.EditAsync(dto);
 
             if (!response.IsSuccess)
             {
@@ -96,45 +100,38 @@ namespace UnidadResidencial.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //  DETALLES 
-        [HttpGet("details/{id:guid}")]
-        public async Task<IActionResult> Details([FromRoute] Guid id)
+        [HttpPost]
+        [CustomAuthorize("deleteSections", "Secciones")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            var response = await _sectionsService.GetOneAsync(id);
+            Response<object> response = await _sectionsService.DeleteAsync(id);
 
             if (!response.IsSuccess)
             {
                 _notyfService.Error(response.Message);
-                return RedirectToAction(nameof(Index));
             }
-
-            return View(response.Result);
-        }
-
-        //  ELIMINAR 
-        [HttpPost("delete/{id:guid}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
-        {
-            var response = await _sectionsService.DeleteAsync(id);
-
-            if (!response.IsSuccess)
-                _notyfService.Error(response.Message);
             else
+            {
                 _notyfService.Success(response.Message);
+            }
 
             return RedirectToAction(nameof(Index));
         }
 
-        //  TOGGLE 
-        [HttpPost("toggle")]
+        [HttpPost]
+        [CustomAuthorize("updateSections", "Secciones")]
         public async Task<IActionResult> Toggle([FromForm] ToggleSectionStatusDTO dto)
         {
-            var response = await _sectionsService.ToggleAsync(dto);
+            Response<object> response = await _sectionsService.ToggleAsync(dto);
 
             if (!response.IsSuccess)
+            {
                 _notyfService.Error(response.Message);
+            }
             else
+            {
                 _notyfService.Success(response.Message);
+            }
 
             return RedirectToAction(nameof(Index));
         }

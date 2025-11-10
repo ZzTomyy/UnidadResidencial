@@ -7,7 +7,7 @@
         public List<string> Errors { get; set; } = new();
         public T? Result { get; set; }
 
-        public static Response<T> Failure(Exception ex, string message = "An error occurred while processing the request")
+        public static Response<T> Failure(Exception ex, string message = "Ha ocurrido un error al generar al solicitud")
         {
             return new Response<T>
             {
@@ -20,17 +20,17 @@
             };
         }
 
-        public static Response<T> Failure(string message, List<string>? errors = null)
+        public static Response<T> Failure(string message, List<string> errors = null)
         {
             return new Response<T>
             {
                 IsSuccess = false,
                 Message = message,
-                Errors = errors ?? new List<string>()
+                Errors = errors
             };
         }
 
-        public static Response<T> Success(T result, string message = "Operation completed successfully")
+        public static Response<T> Success(T result, string message = "Tarea realizada con éxito")
         {
             return new Response<T>
             {
@@ -40,7 +40,7 @@
             };
         }
 
-        public static Response<T> Success(string message = "Operation completed successfully")
+        public static Response<T> Success(string message = "Tarea realizada con éxito")
         {
             return new Response<T>
             {

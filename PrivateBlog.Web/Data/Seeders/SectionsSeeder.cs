@@ -16,10 +16,10 @@ namespace UnidadResidencial.Web.Data.Seeders
         {
             List<Section> sections = new List<Section>()
             {
-                new Section { Id = Guid.NewGuid(), Name = "General", Description = "Basic company information"},
-                new Section { Id = Guid.NewGuid(), Name = "IT"},
+                new Section { Id = Guid.NewGuid(), Name = "General", Description = "Información base de la compañia"},
+                new Section { Id = Guid.NewGuid(), Name = "Informática"},
                 new Section { Id = Guid.NewGuid(), Name = "Pentesting"},
-                new Section { Id = Guid.NewGuid(), Name = "Classes", IsHidden = true}
+                new Section { Id = Guid.NewGuid(), Name = "Clases", IsHidden = true}
             };
 
             foreach (Section section in sections)
