@@ -2,13 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Newtonsoft.Json;
-using PrivateBlog.Web.Core;
 using UnidadResidencial.Web.Core;
 using UnidadResidencial.Web.Core.Pagination;
 using UnidadResidencial.Web.Data;
 using UnidadResidencial.Web.Data.Entities;
 using UnidadResidencial.Web.DTOs;
-using UnidadResidencial.Web.Services.Abtractions;   
+using UnidadResidencial.Web.Services.Abtractions;
 
 namespace UnidadResidencial.Web.Services.Implementations
 {
@@ -18,7 +17,7 @@ namespace UnidadResidencial.Web.Services.Implementations
         private readonly IMapper _mapper;
 
         public RolesService(DataContext context, IMapper mapper) : base(context, mapper)
-        {   
+        {
             _context = context;
             _mapper = mapper;
         }
@@ -46,7 +45,7 @@ namespace UnidadResidencial.Web.Services.Implementations
                         permissionIds = JsonConvert.DeserializeObject<List<Guid>>(dto.PermissionIds);
                     }
 
-                    foreach(Guid permissionId in permissionIds)
+                    foreach (Guid permissionId in permissionIds)
                     {
                         RolePermission rolePermission = new RolePermission
                         {
@@ -62,8 +61,8 @@ namespace UnidadResidencial.Web.Services.Implementations
                     transaction.Commit();
 
                     return Response<ResidencialRoleDTO>.Success(dto, "Rol creado con éxito");
-                } 
-                catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     transaction.Rollback();
                     return Response<ResidencialRoleDTO>.Failure(ex);
@@ -117,7 +116,7 @@ namespace UnidadResidencial.Web.Services.Implementations
 
                 return Response<ResidencialRoleDTO>.Success(dto, "Rol actualizado con éxito");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Response<ResidencialRoleDTO>.Failure(ex);
             }

@@ -77,7 +77,7 @@ namespace UnidadResidencial.Web.Data.Seeders
 
                 await _usersService.AddUserAsync(user, "1234");
 
-                string token = (await _usersService.GenerateConfirmationTokenAsync(user)).Result;
+                string token =  (await _usersService.GenerateConfirmationTokenAsync(user)).Result;
                 await _usersService.ConfirmUserAsync(user, token);
             }
 

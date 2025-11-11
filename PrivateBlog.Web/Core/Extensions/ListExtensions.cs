@@ -1,4 +1,4 @@
-﻿namespace PrivateBlog.Web.Core.Extensions
+﻿namespace UnidadResidencial.Web.Core.Extensions
 {
     public static class ListExtensions
     {
