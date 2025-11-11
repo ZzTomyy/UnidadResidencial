@@ -16,20 +16,20 @@ namespace UnidadResidencial.Web.Data.Seeders
         {
             Section section = await _context.Sections.FirstOrDefaultAsync();
 
-            List<Residencial> blogs = new List<Residencial>()
+            List<Residencial> residencials = new List<Residencial>()
             {
                 new Residencial { Id = Guid.NewGuid(), Name = "Residencial 1", Content = "<p> Residencial 1 </p>", SectionId = section.Id },
                 new Residencial { Id = Guid.NewGuid(), Name = "Residencial 2", Content = "<p> Residencial 2 </p>", SectionId = section.Id },
                 new Residencial { Id = Guid.NewGuid(), Name = "Residencial 3", Content = "<p> Residencial 3 </p>", SectionId = section.Id },
             };
 
-            foreach (Residencial blog in blogs)
+            foreach (Residencial residencial in residencials)
             {
-                bool exists = await _context.Blogs.AnyAsync(s => s.Name == blog.Name);
+                bool exists = await _context.Blogs.AnyAsync(s => s.Name == residencial.Name);
 
                 if (!exists)
                 {
-                    await _context.Blogs.AddAsync(blog);
+                    await _context.Blogs.AddAsync(residencial);
                 }
             }
 

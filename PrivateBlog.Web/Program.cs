@@ -28,4 +28,3 @@ app.MapControllerRoute(
 app.AddCustomWebApplicationConfiguration();
 
 app.Run();
-builder.Services.AddAutoMapper(typeof(Program));

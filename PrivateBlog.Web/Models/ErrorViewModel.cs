@@ -1,4 +1,4 @@
-    namespace UnidadResidencial.Web.Models
+namespace UnidadResidencial.Web.Models
 {
     public class ErrorViewModel
     {
