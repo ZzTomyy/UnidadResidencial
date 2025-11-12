@@ -1,5 +1,5 @@
 ﻿@using UnidadResidencial.Web.Core
-@model PaginationResponse<SectionDTO>
+@model PaginationResponse<ResidencialRoleDTO>
 
 @inject UnidadResidencial.Web.Services.Abtractions.IUsersService _usersService
 
@@ -8,7 +8,7 @@
 }
 
 <div class="pagetitle">
-    <h1>Dashboard</h1>
+    <h1>Dashboard</h1>  
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Dashboard">Dashboard</a></li>
@@ -99,9 +99,11 @@
 
                                     @if (await _usersService.CurrentUserIsAuthorizedAsync("deleteRoles", "Roles"))
                                     {
-                                        <form asp-action="Delete" asp-route-id="@item.Id" style="display:contents">
-                                            <button class="btn btn-danger btn-sm btnDelete"><i class="bi bi-trash-fill"></i></button>
-                                        </form>
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-danger btn-sm btnDelete">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </a>
                                     }
                                 }
                             </td>
@@ -126,6 +128,8 @@
 
                 event.preventDefault();
 
+                const url = $(this).attr('href');
+
                 Swal.fire({
                     title: "¿Desea eliminar el Rol?",
                     text: "No prodrá revertirlo",
@@ -135,9 +139,7 @@
 
                     if (result.isConfirmed) {
 
-                        const form = $(this).closest('form');
-
-                        form.submit();
+                        window.location.href = url;
                     }
 
                 });

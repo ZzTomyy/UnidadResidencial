@@ -153,5 +153,41 @@ namespace UnidadResidencial.Web.Controllers
             dto.Permissions = permissionsResponse2.Result;
             return View(dto);
         }
+
+        [HttpGet]
+        [CustomAuthorize(permission: "deleteRoles", module: "Roles")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var response = await _rolesService.GetOneAsync(id);
+
+            if (!response.IsSuccess)
+            {
+                _notyfService.Error(response.Message);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(response.Result);
+        }
+
+        [HttpPost("Roles/DeleteConfirmed/{id}")]
+        [ActionName("DeleteConfirmed")]
+        [CustomAuthorize(permission: "deleteRoles", module: "Roles")]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            Response<object> response = await _rolesService.DeleteAsync(id);
+
+            if (response.IsSuccess)
+            {
+                _notyfService.Success("Rol eliminado correctamente");
+                return RedirectToAction(nameof(Index));
+            }
+
+            _notyfService.Error(response.Message ?? "No se pudo eliminar el rol");
+            return RedirectToAction(nameof(Index));
+        }
+
+
     }
 }
+
+

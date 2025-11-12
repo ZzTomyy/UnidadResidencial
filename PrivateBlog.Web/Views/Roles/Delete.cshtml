@@ -1,0 +1,54 @@
+﻿@model UnidadResidencial.Web.DTOs.ResidencialRoleDTO
+
+@{
+    ViewData["Title"] = "Eliminar Rol";
+}
+
+<div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a asp-controller="Home" asp-action="Dashboard">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a asp-action="Index">Roles</a>
+            </li>
+            <li class="breadcrumb-item active">Eliminar Rol</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section dashboard">
+
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title text-danger">¿Está seguro de eliminar este rol?</h3>
+
+            <div class="alert alert-warning">
+                Esta acción no se puede deshacer.
+            </div>
+
+            <dl class="row">
+                <dt class="col-sm-3">Nombre del Rol</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3">Permisos asignados</dt>
+                <dd class="col-sm-9">
+                    @foreach (var p in Model.Permissions.Where(p => p.Selected))
+                    {
+                        <span class="badge bg-primary me-1">@p.Description</span>
+                    }
+                </dd>
+            </dl>
+
+            <form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</section>
+

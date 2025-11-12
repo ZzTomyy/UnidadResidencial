@@ -9,8 +9,8 @@ namespace UnidadResidencial.Web.Data.Seeders
     {
         private readonly DataContext _context;
         private readonly IUsersService _usersService;
-        private const string CONTENT_MANAGER_ROLE_NAME = "Gestor de contenido";
-        private const string BASIC_ROLE_NAME = "Basic";
+        private const string ADMINISTRADOR = "Administrador";
+        private const string PROPIETARIO = "Residente";
 
         public UserRolesSeeder(DataContext context, IUsersService usersService)
         {
@@ -62,7 +62,7 @@ namespace UnidadResidencial.Web.Data.Seeders
 
             if (user is null)
             {
-                ResidencialRole contentManagerRole = await _context.ResidencialRoles.FirstOrDefaultAsync(r => r.Name == CONTENT_MANAGER_ROLE_NAME);
+                ResidencialRole contentManagerRole = await _context.ResidencialRoles.FirstOrDefaultAsync(r => r.Name == ADMINISTRADOR);
 
                 user = new User
                 {
@@ -86,7 +86,7 @@ namespace UnidadResidencial.Web.Data.Seeders
 
             if (user is null)
             {
-                ResidencialRole basicRole = await _context.ResidencialRoles.FirstOrDefaultAsync(r => r.Name == BASIC_ROLE_NAME);
+                ResidencialRole basicRole = await _context.ResidencialRoles.FirstOrDefaultAsync(r => r.Name == PROPIETARIO);
 
                 user = new User
                 {
@@ -120,11 +120,11 @@ namespace UnidadResidencial.Web.Data.Seeders
 
         private async Task BasicRoleAsync()
         {
-            bool exists = await _context.ResidencialRoles.AnyAsync(r => r.Name == BASIC_ROLE_NAME);
+            bool exists = await _context.ResidencialRoles.AnyAsync(r => r.Name == PROPIETARIO);
 
             if (!exists)
             {
-                ResidencialRole role = new ResidencialRole { Id = Guid.NewGuid(), Name = BASIC_ROLE_NAME };
+                ResidencialRole role = new ResidencialRole { Id = Guid.NewGuid(), Name = PROPIETARIO };
                 await _context.ResidencialRoles.AddAsync(role);
                 await _context.SaveChangesAsync();
             }
@@ -132,11 +132,11 @@ namespace UnidadResidencial.Web.Data.Seeders
 
         private async Task ContentManagerRoleAsync()
         {
-            bool exists = await _context.ResidencialRoles.AnyAsync(r => r.Name == CONTENT_MANAGER_ROLE_NAME);
+            bool exists = await _context.ResidencialRoles.AnyAsync(r => r.Name == ADMINISTRADOR);
 
             if (!exists)
             {
-                ResidencialRole role = new ResidencialRole { Id = Guid.NewGuid(), Name = CONTENT_MANAGER_ROLE_NAME };
+                ResidencialRole role = new ResidencialRole { Id = Guid.NewGuid(), Name = ADMINISTRADOR };
                 await _context.ResidencialRoles.AddAsync(role);
 
                 List<Permission> permissions = await _context.Permissions.Where(p => p.Module == "Secciones" || p.Module == "Residencials")
