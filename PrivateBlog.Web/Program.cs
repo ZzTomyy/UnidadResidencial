@@ -25,6 +25,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.AddCustomWebApplicationConfiguration();
+await app.AddCustomWebApplicationConfigurationAsync();
 
 app.Run();

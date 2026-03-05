@@ -82,22 +82,21 @@ namespace UnidadResidencial.Web
             builder.Services.AddTransient<ICombosHelper, CombosHelper>();
         }
 
-        public static WebApplication AddCustomWebApplicationConfiguration(this WebApplication app)
+        public static async Task<WebApplication> AddCustomWebApplicationConfigurationAsync(this WebApplication app)
         {
             app.UseNotyf();
-
-            SeedData(app);
-
+            await SeedDataAsync(app);  // ✔️ ahora async
             return app;
         }
 
-        private static void SeedData(WebApplication app)
+        private static async Task SeedDataAsync(WebApplication app)
         {
-            IServiceScopeFactory scopeFactory = app.Services.GetService<IServiceScopeFactory>();
+            var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
 
-            using IServiceScope scope = scopeFactory.CreateScope();
-            SeedDb service = scope.ServiceProvider.GetService<SeedDb>();
-            service.SeedAsync().Wait();
+            using var scope = scopeFactory.CreateScope();
+
+            var service = scope.ServiceProvider.GetRequiredService<SeedDb>();
+            await service.SeedAsync(); // ✔️ AHORA asynchronous
         }
     }
 }

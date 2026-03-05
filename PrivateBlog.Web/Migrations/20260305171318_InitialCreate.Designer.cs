@@ -12,7 +12,7 @@ using UnidadResidencial.Web.Data;
 namespace UnidadResidencial.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251110213946_InitialCreate")]
+    [Migration("20260305171318_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
